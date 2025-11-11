@@ -37,9 +37,11 @@ public class AppointmentRepository : IAppointmentRepository
 
     public async Task<bool> UpdateAsync(string id, Appointment appointment)
     {
+        appointment.Id = id;
         appointment.UpdatedAt = DateTime.UtcNow;
-        var result = await _appointmentsCollection.ReplaceOneAsync(x => x.Id == id, appointment);
-        return result.IsAcknowledged && result.ModifiedCount > 0;
+        var replaceOptions = new ReplaceOptions { IsUpsert = false };
+        var result = await _appointmentsCollection.ReplaceOneAsync(x => x.Id == id, appointment, replaceOptions);
+        return result.IsAcknowledged && result.MatchedCount > 0;
     }
 
     public async Task<bool> DeleteAsync(string id)
