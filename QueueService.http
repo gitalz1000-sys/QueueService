@@ -1,6 +1,47 @@
-@QueueService_HostAddress = http://localhost:5299
+@QueueService_HostAddress = http://localhost:5000
 
-GET {{QueueService_HostAddress}}/weatherforecast/
+### קבלת כל התורים
+GET {{QueueService_HostAddress}}/api/appointments
 Accept: application/json
+
+###
+
+### קבלת תור לפי ID (החלף את {id} ב-ID אמיתי)
+GET {{QueueService_HostAddress}}/api/appointments/{id}
+Accept: application/json
+
+###
+
+### יצירת תור חדש
+POST {{QueueService_HostAddress}}/api/appointments
+Content-Type: application/json
+
+{
+  "customerName": "יוסי כהן",
+  "phoneNumber": "050-1234567",
+  "appointmentDate": "2025-11-15T10:00:00",
+  "serviceType": "תספורת",
+  "notes": "מועדף בבוקר"
+}
+
+###
+
+### עדכון תור קיים (החלף את {id} ב-ID אמיתי)
+PUT {{QueueService_HostAddress}}/api/appointments/{id}
+Content-Type: application/json
+
+{
+  "customerName": "יוסי כהן",
+  "phoneNumber": "050-1234567",
+  "appointmentDate": "2025-11-15T14:00:00",
+  "serviceType": "תספורת",
+  "status": "Confirmed",
+  "notes": "שונה לשעה 14:00"
+}
+
+###
+
+### מחיקת תור (החלף את {id} ב-ID אמיתי)
+DELETE {{QueueService_HostAddress}}/api/appointments/{id}
 
 ###
