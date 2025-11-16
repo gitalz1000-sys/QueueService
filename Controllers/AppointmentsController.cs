@@ -8,7 +8,6 @@ namespace QueueService.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Produces("application/json")]
 public class AppointmentsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -18,102 +17,74 @@ public class AppointmentsController : ControllerBase
         _mediator = mediator;
     }
 
-    /// <summary>
-    /// קבלת כל התורים במערכת
-    /// </summary>
-    /// <returns>רשימת כל התורים</returns>
+    // החזרת כל התורים הקיימים
     [HttpGet]
-    [ProducesResponseType(typeof(List<Appointment>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<Appointment>>> GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var appointments = await _mediator.Send(new GetAllAppointmentsQuery());
-        return Ok(appointments);
+        var items = await _mediator.Send(new GetAllAppointmentsQuery());
+
+        // במקרה ואין תוצאות — מחזירים רשימה ריקה (בחירה מודעת)
+        return Ok(items ?? new List<Appointment>());
     }
 
-    /// <summary>
-    /// קבלת תור לפי מזהה
-    /// </summary>
-    /// <param name="id">מזהה התור</param>
-    /// <returns>פרטי התור</returns>
+    // החזרת תור לפי מזהה
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(Appointment), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Appointment>> GetById(string id)
+    public async Task<IActionResult> GetById(string id)
     {
-        var appointment = await _mediator.Send(new GetAppointmentByIdQuery { Id = id });
-        
-        if (appointment == null)
-        {
-            return NotFound(new { message = "תור לא נמצא" });
-        }
-        
-        return Ok(appointment);
+        if (string.IsNullOrWhiteSpace(id))
+            return BadRequest("חסר מזהה תור.");
+
+        var item = await _mediator.Send(new GetAppointmentByIdQuery { Id = id });
+
+        if (item == null)
+            return NotFound($"לא נמצא תור עם מזהה {id}.");
+
+        return Ok(item);
     }
 
-    /// <summary>
-    /// קביעת תור חדש
-    /// </summary>
-    /// <param name="command">פרטי התור החדש</param>
-    /// <returns>התור שנוצר</returns>
+    // יצירת תור חדש
     [HttpPost]
-    [ProducesResponseType(typeof(Appointment), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Appointment>> Create([FromBody] CreateAppointmentCommand command)
+    public async Task<IActionResult> Create([FromBody] CreateAppointmentCommand command)
     {
         if (!ModelState.IsValid)
-        {
             return BadRequest(ModelState);
-        }
 
-        var appointment = await _mediator.Send(command);
-        return CreatedAtAction(nameof(GetById), new { id = appointment.Id }, appointment);
+        var created = await _mediator.Send(command);
+
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
-    /// <summary>
-    /// עדכון תור קיים
-    /// </summary>
-    /// <param name="id">מזהה התור</param>
-    /// <param name="command">פרטי העדכון</param>
-    /// <returns>הצלחה או כישלון</returns>
+    // עדכון תור קיים
     [HttpPut("{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(string id, [FromBody] UpdateAppointmentCommand command)
     {
+        if (string.IsNullOrWhiteSpace(id))
+            return BadRequest("מזהה לא תקין.");
+
         if (!ModelState.IsValid)
-        {
             return BadRequest(ModelState);
-        }
 
         command.Id = id;
-        var result = await _mediator.Send(command);
-        
-        if (!result)
-        {
-            return NotFound(new { message = "תור לא נמצא" });
-        }
-        
+        var updated = await _mediator.Send(command);
+
+        if (!updated)
+            return NotFound($"תור עם מזהה {id} לא נמצא.");
+
         return NoContent();
     }
 
-    /// <summary>
-    /// מחיקת תור
-    /// </summary>
-    /// <param name="id">מזהה התור למחיקה</param>
-    /// <returns>הצלחה או כישלון</returns>
+    // מחיקת תור
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(string id)
     {
-        var result = await _mediator.Send(new DeleteAppointmentCommand { Id = id });
-        
-        if (!result)
-        {
-            return NotFound(new { message = "תור לא נמצא" });
-        }
-        
+        if (string.IsNullOrWhiteSpace(id))
+            return BadRequest("מזהה לא תקין.");
+
+        var deleted = await _mediator.Send(new DeleteAppointmentCommand { Id = id });
+
+        if (!deleted)
+            return NotFound($"אין תור עם מזהה {id}.");
+
         return NoContent();
     }
 }
