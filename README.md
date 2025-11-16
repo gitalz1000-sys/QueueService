@@ -17,21 +17,8 @@ http://localhost:5000/swagger
 
 MongoDB פועל בכתובת:
 mongodb://localhost:27017
-### הרצת הפרויקט ב-Replit
-הפרויקט מוגדר להריץ אוטומטית. פשוט לחץ על **Run** והמערכת תתחיל לעבוד.
 
-שני workflows רצים במקביל:
-1. **MongoDB** - שרת מסד הנתונים המקומי
-2. **API** - שרת ה-Web API על פורט 5000
-
-### גישה ל-Swagger Documentation
-פתח את הדפדפן והיכנס לכתובת:
-```
-https://[your-repl-url].repl.co
-```
-תראה ממשק Swagger אינטראקטיבי עם כל ה-API endpoints.
-
-## 📋 API Endpoints
+##  API Endpoints
 
 | שיטה | נתיב | תיאור |
 |------|------|-------|
@@ -109,16 +96,6 @@ PUT /api/appointments/{id}
   "status": "Confirmed",
   "notes": "שנו לשעה 14:00"
 }
-```
-
-## 🔧 הרצה מקומית
-
-```bash
-# הפעל MongoDB
-./start-mongo.sh
-
-# הפעל את ה-API (בטרמינל אחר)
-dotnet run
 ```
 
 ##  אבטחה
