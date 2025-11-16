@@ -2,7 +2,7 @@
 
 מערכת מקצועית לניהול תורים (appointments) המיושמת ב-.NET Core Web API עם MongoDB.
 
-## 🚀 התחלה מהירה
+##  התחלה מהירה
 
 ### הרצת הפרויקט ב-Replit
 הפרויקט מוגדר להריץ אוטומטית. פשוט לחץ על **Run** והמערכת תתחיל לעבוד.
@@ -28,7 +28,7 @@ https://[your-repl-url].repl.co
 | PUT | `/api/appointments/{id}` | עדכון תור קיים |
 | DELETE | `/api/appointments/{id}` | מחיקת תור |
 
-## 🏗️ ארכיטקטורה
+## ארכיטקטורה
 
 ### תבנית CQRS (Command Query Responsibility Segregation)
 המערכת מפרידה בין פעולות כתיבה (Commands) לפעולות קריאה (Queries):
@@ -45,7 +45,7 @@ https://[your-repl-url].repl.co
 - ✅ Interface Segregation - ממשקים ממוקדים
 - ✅ Dependency Inversion - תלות ב-Abstractions
 
-## 🛠️ טכנולוגיות
+## טכנולוגיות
 
 - **.NET 8.0** - Framework עדכני ויציב
 - **MongoDB 7.0** - בסיס נתונים NoSQL
@@ -53,7 +53,7 @@ https://[your-repl-url].repl.co
 - **Swagger/OpenAPI** - תיעוד אוטומטי ואינטראקטיבי
 - **ASP.NET Core** - Web API framework
 
-## 📁 מבנה הפרויקט
+## מבנה הפרויקט
 
 ```
 QueueService/
@@ -74,18 +74,21 @@ QueueService/
 └── Program.cs               # נקודת כניסה ראשית
 ```
 
-## 💡 דוגמאות שימוש
+##  דוגמאות שימוש
 
 ### יצירת תור חדש
 ```bash
 POST /api/appointments
 {
+  "nationalId": "123456789",
   "customerName": "יוסי כהן",
   "phoneNumber": "050-1234567",
+  "serviceCategory": "Interior Ministry",
+  "serviceType": "Renew Passport",
   "appointmentDate": "2025-11-15T10:00:00",
-  "serviceType": "תספורת",
-  "notes": "מועדף בבוקר"
+  "notes": "נא לתאם בבוקר"
 }
+
 ```
 
 ### עדכון תור
@@ -111,23 +114,18 @@ PUT /api/appointments/{id}
 dotnet run
 ```
 
-## 📚 תיעוד מפורט
+##  תיעוד מפורט
 
 לתיעוד מפורט, ראה [replit.md](./replit.md)
 
-## 🔐 אבטחה
+##  אבטחה
 
-⚠️ **הערה חשובה**: המערכת הנוכחית מוגדרת לפיתוח.
+ **הערה חשובה**: המערכת הנוכחית מוגדרת לפיתוח.
 לפני העברה לייצור (production), יש להוסיף:
 - Authentication & Authorization
 - Rate Limiting
 - Input Validation
 - CORS מוגבל לדומיינים ספציפיים
 
-## 📝 רישיון
-
-פרויקט חינמי לשימוש חינוכי ומסחרי.
-
----
-**גרסה**: 1.0.0  
-**תאריך**: נובמבר 2025
+## רישיון
+הפרויקט פתוח לשימוש לימודי ומקצועי.
