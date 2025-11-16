@@ -4,6 +4,19 @@
 
 ##  התחלה מהירה
 
+### הפעלה מהירה באמצעות Docker
+הפרויקט מגיע עם קובץ docker-compose.yml שמאפשר להפעיל את המערכת בלחיצה אחת — ללא התקנת MongoDB וללא התקנת ‎.NET.
+הפעלה:
+```
+docker compose up --build
+```
+לאחר שהמערכת עולה:
+
+API זמין בכתובת:
+http://localhost:5000/swagger
+
+MongoDB פועל בכתובת:
+mongodb://localhost:27017
 ### הרצת הפרויקט ב-Replit
 הפרויקט מוגדר להריץ אוטומטית. פשוט לחץ על **Run** והמערכת תתחיל לעבוד.
 
@@ -36,14 +49,6 @@ https://[your-repl-url].repl.co
 - **Commands**: יצירה, עדכון, מחיקה
 - **Queries**: קבלת נתונים
 - **Handlers**: מבצעים את הלוגיקה העסקית
-
-### עקרונות SOLID
-הקוד נכתב בהתאם לעקרונות SOLID לקוד נקי ותחזוקתי:
-- ✅ Single Responsibility - כל מחלקה עושה דבר אחד
-- ✅ Open/Closed - קל להרחבה ללא שינוי
-- ✅ Liskov Substitution - שימוש ב-Interfaces
-- ✅ Interface Segregation - ממשקים ממוקדים
-- ✅ Dependency Inversion - תלות ב-Abstractions
 
 ## טכנולוגיות
 
@@ -95,12 +100,14 @@ POST /api/appointments
 ```bash
 PUT /api/appointments/{id}
 {
+  "nationalId": "123456789",
   "customerName": "יוסי כהן",
   "phoneNumber": "050-1234567",
   "appointmentDate": "2025-11-15T14:00:00",
-  "serviceType": "תספורת",
+  "serviceCategory": "Interior Ministry",
+  "serviceType": "Renew Passport",
   "status": "Confirmed",
-  "notes": "שונה לשעה 14:00"
+  "notes": "שנו לשעה 14:00"
 }
 ```
 
@@ -113,10 +120,6 @@ PUT /api/appointments/{id}
 # הפעל את ה-API (בטרמינל אחר)
 dotnet run
 ```
-
-##  תיעוד מפורט
-
-לתיעוד מפורט, ראה [replit.md](./replit.md)
 
 ##  אבטחה
 
