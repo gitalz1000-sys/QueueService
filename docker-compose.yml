@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: queue-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  api:
+    build: .
+    container_name: queue-api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:5000"
+      MongoDbSettings__ConnectionString: "mongodb://mongo:27017"
+      MongoDbSettings__DatabaseName: "QueueServiceDb"
+
+volumes:
+  mongo_data:
