@@ -1,6 +1,5 @@
 using MediatR;
 using QueueService.Features.Appointments.Commands;
-using QueueService.Models;
 using QueueService.Repositories;
 
 namespace QueueService.Features.Appointments.Handlers;
@@ -16,20 +15,24 @@ public class UpdateAppointmentHandler : IRequestHandler<UpdateAppointmentCommand
 
     public async Task<bool> Handle(UpdateAppointmentCommand request, CancellationToken cancellationToken)
     {
-        var existingAppointment = await _repository.GetByIdAsync(request.Id);
-        
-        if (existingAppointment == null)
-        {
+        var existing = await _repository.GetByIdAsync(request.Id);
+        if (existing == null)
             return false;
-        }
 
-        existingAppointment.CustomerName = request.CustomerName;
-        existingAppointment.PhoneNumber = request.PhoneNumber;
-        existingAppointment.AppointmentDate = request.AppointmentDate;
-        existingAppointment.ServiceType = request.ServiceType;
-        existingAppointment.Status = request.Status;
-        existingAppointment.Notes = request.Notes;
+        existing.NationalId = request.NationalId;
+        existing.CustomerName = request.CustomerName;
+        existing.PhoneNumber = request.PhoneNumber;
+        existing.AppointmentDate = request.AppointmentDate;
 
-        return await _repository.UpdateAsync(request.Id, existingAppointment);
+        existing.Ministry = request.Ministry;
+        existing.ServiceCategory = request.ServiceCategory;
+        existing.SubService = request.SubService;
+
+        existing.Status = request.Status;
+        existing.Notes = request.Notes;
+
+        existing.UpdatedAt = DateTime.UtcNow;
+
+        return await _repository.UpdateAsync(request.Id, existing);
     }
 }

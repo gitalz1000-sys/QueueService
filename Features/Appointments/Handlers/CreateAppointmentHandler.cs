@@ -18,12 +18,19 @@ public class CreateAppointmentHandler : IRequestHandler<CreateAppointmentCommand
     {
         var appointment = new Appointment
         {
+            NationalId = request.NationalId,
             CustomerName = request.CustomerName,
             PhoneNumber = request.PhoneNumber,
             AppointmentDate = request.AppointmentDate,
-            ServiceType = request.ServiceType,
+
+            Ministry = request.Ministry,
+            ServiceCategory = request.ServiceCategory,
+            SubService = request.SubService,
+
             Notes = request.Notes,
-            Status = "Scheduled"
+            Status = "Scheduled",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         return await _repository.CreateAsync(appointment);

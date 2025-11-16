@@ -9,6 +9,9 @@ public class Appointment
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
 
+    [BsonElement("nationalId")]
+    public string NationalId { get; set; } = string.Empty;
+
     [BsonElement("customerName")]
     public string CustomerName { get; set; } = string.Empty;
 
@@ -18,8 +21,14 @@ public class Appointment
     [BsonElement("appointmentDate")]
     public DateTime AppointmentDate { get; set; }
 
-    [BsonElement("serviceType")]
-    public string ServiceType { get; set; } = string.Empty;
+    [BsonElement("ministry")]
+    public string Ministry { get; set; } = string.Empty;
+
+    [BsonElement("serviceCategory")]
+    public string ServiceCategory { get; set; } = string.Empty;
+
+    [BsonElement("subService")]
+    public string SubService { get; set; } = string.Empty;
 
     [BsonElement("status")]
     public string Status { get; set; } = "Scheduled";
